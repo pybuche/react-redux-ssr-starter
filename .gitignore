@@ -1,0 +1,14 @@
+# Javascript
+dist/
+lib/
+build/
+node_modules/
+logs/
+
+# Intellij
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+classes/
