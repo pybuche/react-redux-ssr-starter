@@ -1,5 +1,6 @@
 /* eslint-disable */
 const path = require('path');
+const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
@@ -38,15 +39,32 @@ const common = {
 
 const configs = {
     client: {
-        entry: ['babel-polyfill', './app/components'],
+        entry: [
+            'babel-polyfill',
+            'react-hot-loader/patch',
+            'webpack-dev-server/client?http://localhost:8080',
+            './app/components'
+        ],
         output: {
             publicPath,
             path: outPath,
             filename: 'client.js',
         },
         devtool: isProd ? 'source-map' : 'eval-source-map',
+        devServer: {
+            publicPath,
+            contentBase: outPath,
+            hot: true,
+            proxy: {
+                '*': {
+                    target: 'http://localhost:8000',
+                },
+            },
+        },
+        plugins: isProd
+            ? []
+            : [new webpack.HotModuleReplacementPlugin()],
     },
-
     server: {
         target: 'node',
         entry: ['babel-polyfill', './app/server'],
@@ -62,8 +80,8 @@ const configs = {
     },
 };
 
+
 module.exports = [
     Object.assign({}, common, configs.client),
     Object.assign({}, common, configs.server),
 ];
-

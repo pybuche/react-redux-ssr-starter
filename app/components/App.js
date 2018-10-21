@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { hot } from 'react-hot-loader';
 
 import routes from 'app/routes';
 import PageRoute from './PageRoute';
@@ -22,4 +23,4 @@ const App = () => (
     </Switch>
 );
 
-export default App;
+export default hot(module)(App);
